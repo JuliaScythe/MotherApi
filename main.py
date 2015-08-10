@@ -2,11 +2,13 @@
 import requests as r
 import constants
 import sys
+import os
 from API import API
 
 # Program metadata
 version = "version 0.01"
-
+size = os.get_terminal_size()
+w = size.columns
 # API variebles
 apis = []
 googleMaps = API("Google Maps API", 1.0, "a", constants.JAVASCRIPT, constants.EMBED, constants.API_KEY)
@@ -15,21 +17,22 @@ googleMaps.registerFunc("Standard Map", "The standard google map", "googleMaps\\
 googleMaps.registerFunc("Std. Map w/ marker", "Map with custom marker text", "googleMaps\\android\\hellomarker.java")
 googleMaps.registerFunc("Map types", "Map with choice of types", "googleMaps\\android\\type.java")
 googleMaps.registerFunc("Map w/ custom markers", "Map with custom marker image", "googleMaps\\android\\markerimage.java")
-googleMaps.registerFunc("Map w/ flat markers", "Map with flat marker images. These rotate with prespective.", "googleMaps\\android\\markerflat.java")
-googleMaps.printFuncs()
+googleMaps.registerFunc("Map w/ flat markers", "Map w/ flat marker img that rotate w/ prespective", "googleMaps\\android\\markerflat.java")
+#googleMaps.printFuncs()
 
 def startup():
-    print("motherApi")
-    print("By Jake Irvine")
-    print(version)
-    print("Testing Internet Connectivity:")
+    print("=" * w)
+    print(" " * int(w/2-4) + "motherApi")
+    print(" " * int(w/2-6) + "By Jake Irvine")
+    print(" " * int(w/2-5) + version)
+    print(" " * int(w/2-12) + "Testing Internet Connectivity:")
     try:
         res = r.get("http://www.google.com")
     except("*"):
         print("Error 101: No internet detected")
         sys.exit(1)
-    print("Connection Succesful")
-
+    print(" " * int(w/2-6) + "Connection Succesful")
+    print("=" * w)
 def listApis():
     for a in apis:
         print("["+ a.letter + "] | " + a.name.ljust(20) + "| " + str(a.version))
@@ -38,6 +41,10 @@ def listApis():
         if ch == a.letter:
             return a
     print("Please choose am API")
-    listApis
+    listApis()
 startup()
-listApis()
+choice = listApis()
+print("=" * w)
+print("Ok, now choose a function:")
+print("=" * w)
+choice.printFuncs()
